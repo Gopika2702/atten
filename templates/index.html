@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1> ATTENDANCE MANAGEMENT SYSTEM </h1>
+
+    <!-- Add Student Form -->
+    <form method="POST" action="/add">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="roll" placeholder="Roll Number" required>
+        <select name="status" required>
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+        </select>
+        <input type="date" name="date" required>
+        <button type="submit">Add Record</button>
+    </form>
+    <h2>Student Detail</h2>
+
+    <!-- Attendance Table -->
+    <table>
+        <tr>
+            <th>Name</th><th>Roll</th><th>Status</th><th>Date</th><th>Actions</th>
+        </tr>
+        {% for s in students %}
+        <tr>
+            <td>{{ s.name }}</td>
+            <td>{{ s.roll }}</td>
+            <td>{{ s.status }}</td>
+            <td>{{ s.date }}</td>
+            <td>
+                <a href="/update/{{ s.roll }}">Update</a> |
+                <a href="/delete/{{ s.roll }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Update Form (only shows when editing) -->
+    {% if student %}
+    <h2>Update Record</h2>
+    <form method="POST" action="/update/{{ student.roll }}">
+        <input type="text" name="name" value="{{ student.name }}" required>
+        <select name="status" required>
+            <option value="Present" {% if student.status == "Present" %}selected{% endif %}>Present</option>
+            <option value="Absent" {% if student.status == "Absent" %}selected{% endif %}>Absent</option>
+        </select>
+        <input type="date" name="date" value="{{ student.date }}" required>
+        <button type="submit">Update</button>
+    </form>
+    {% endif %}
+    
+<h3> BY </h3>
+<h4>GOPIKA P</h4>
+</body>
+</html>
